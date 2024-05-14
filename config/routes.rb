@@ -7,4 +7,8 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+
+  get "/index", controller: "products", action: "index"
+  get "/show", controller: "products", action: "show"
+  get "/products/:id" => "products#dynamic"
 end

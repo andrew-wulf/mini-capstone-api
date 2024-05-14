@@ -7,3 +7,34 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+
+
+generator = Faker::Commerce
+
+50.times do
+  name = generator.product_name
+  price = (generator.price(range:99...3000)).to_i
+  dep = generator.department(max: 3)
+  
+  deps = dep.split(/, | & /)
+  deps = deps.join(', ')
+
+  num = rand(60)
+  if num > 40
+    sale = rand(0...45)
+  else
+    sale = 0
+  end
+  url = nil
+
+  stock = rand(0...40)
+
+  desc = "This #{generator.color} #{name}, developed by #{generator.brand}, was made in #{Faker::Address.country} using only the finest #{generator.material}!"
+
+
+  prod = Product.new(name: name, price: price, category: deps, on_sale: sale, image_url: nil, in_stock: stock, description: desc)
+  prod.save
+end
+
+
