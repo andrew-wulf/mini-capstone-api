@@ -1,20 +1,16 @@
-json.number_of_products @products.length
+json.current_item @product.name
 
-max, product = 0, ""
-for p in @products
-  if p.in_stock > max
-    max, product = p.in_stock, p.name
-  end
+factor = (100 - @product.on_sale)
+
+price_int = (@product.price * factor) / 100
+price = price_int.to_s
+price = '$' + price[...-2] + '.' + price[-2...]
+
+json.price price
+if @product.on_sale > 0
+  json.percent_off "#{@product.on_sale}%"
 end
-
-json.most_in_stock [product, max]
-
-sale_items = {}
-for p in @products
-  if p.on_sale > 25
-    sale_items[p.name] = ["$#{(p.price/100) * (1 - (p.on_sale/100))}", "#{p.on_sale}% off!", p.description, p.category]
-  end
-end
-
-
-json.on_sale sale_items
+json.categories @product.category
+json.image_url @product.image_url
+json.description @product.description
+json.id @product.id
