@@ -69,3 +69,4 @@ end
 
 #------------ MY GEMS -----------------
 gem "faker"
+gem 'rack-cors'

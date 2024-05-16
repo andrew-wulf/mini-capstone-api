@@ -9,12 +9,13 @@ Rails.application.routes.draw do
   # root "posts#index"
 
 
-  get "/products/index" => "products#index"
+  get "/products" => "products#index"
   post "/products/create" => "products#create"
-  patch "/products/update" => "products#update"
-  delete "products/remove" => "products#destroy"
 
   get "/products/:id" => "products#show"
+  patch "/products/:id" => "products#update"
+  delete "products/:id" => "products#destroy"
+
   get "/products/categories/:category" => "products#show_category"
   
 
