@@ -11,6 +11,7 @@ Rails.application.routes.draw do
 
   get "/products" => "products#index"
   post "/products/create" => "products#create"
+  get "/products/test/:id" => "products#test"
 
   get "/products/:id" => "products#show"
   patch "/products/:id" => "products#update"
@@ -18,5 +19,6 @@ Rails.application.routes.draw do
 
   get "/products/categories/:category" => "products#show_category"
   
+ 
 
 end

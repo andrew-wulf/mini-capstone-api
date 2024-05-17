@@ -5,8 +5,14 @@ class ProductsController < ApplicationController
   end
 
   def show
-    @product = Product.find_by(id: params[:id])
-    render(template: "products/show", formats: :json)
+    prod = Product.find_by(id: params[:id])
+    
+    if prod
+      @data = prod.display
+      render(template: "products/show", formats: :json)
+    else
+      render json: {message: 'No item exists at this index.'}
+    end
   end
 
   def show_category
@@ -42,4 +48,11 @@ class ProductsController < ApplicationController
     end
     render json: {id_selected: params[:id], removed_successfully: status}
   end
+
+
+  def test
+    render(template: 'products/test', formats: :json)
+  end
+
+
 end
