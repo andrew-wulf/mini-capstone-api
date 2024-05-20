@@ -6,7 +6,10 @@ class ProductsController < ApplicationController
 
   def show
     prod = Product.find_by(id: params[:id])
-    
+    display(prod)
+  end
+
+  def display(prod)
     if prod
       @data = prod.display
       render(template: "products/show", formats: :json)
@@ -21,12 +24,14 @@ class ProductsController < ApplicationController
   end
 
   def create
-    prod = Product.new(name: params[:name], price: params[:price], category: params[:deps], on_sale: params[:sale], image_url: params[:url], in_stock: params[:stock], description: params[:desc])
+    prod = Product.new(name: params[:name], price: params[:price], category: params[:deps], on_sale: params[:on_sale] || 0, image_url: params[:url], in_stock: params[:in_stock] || 0, description: params[:desc])
 
-    prod.save
-    @product = Product.last
-    
-    render(template: "products/show", formats: :json)
+    if prod.valid?
+      prod.save
+      display(prod)
+    else
+      render json: prod.errors
+    end
   end
 
   def update
@@ -34,8 +39,7 @@ class ProductsController < ApplicationController
 
     prod.update(name: params[:name] || prod.name, price: params[:price] || prod.price, category: params[:deps] || prod.category, on_sale: params[:sale] || prod.on_sale, image_url: params[:url] || prod.image_url, in_stock: params[:stock] || prod.in_stock, description: params[:desc] || prod.description)
   
-    @product = prod
-    render(template: "products/show", formats: :json)
+    display(prod)
   end
 
   def destroy

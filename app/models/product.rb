@@ -1,5 +1,9 @@
 class Product < ApplicationRecord
-
+  validates :name,  presence: true, uniqueness: true
+  validates :price,  presence: true, numericality: {greater_than: 0, less_than: 10000000}
+  validates :category,  presence: true
+  validates :in_stock,  presence: true, numericality: { only_integer: true }
+  validates :on_sale, presence: true, numericality: { only_integer: true, less_than_or_equal_to: 100}
 
   def display
     @data = self.attributes
@@ -11,25 +15,23 @@ class Product < ApplicationRecord
   end
 
   def is_discounted?
-    return @price <= 1000
+    return @price <= 10
   end
 
   def tax
-    return (@price * 9) / 100
+    return (@price * 0.09).round(2)
   end
 
   def total
     return @price + self.tax
   end
 
-  def display_currency(cents)
-    amount = cents.to_s
-    return '$' + amount[...-2] + '.' + amount[-2...]
+  def display_currency(amount)
+    return "$#{amount.to_s}"
   end
 
   def get_price
-    factor = (100 - self.on_sale)
-    return (self.price * factor) / 100
+    return self.price * ((100 - self.on_sale) / 100)
   end
 
 end
