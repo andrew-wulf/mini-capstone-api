@@ -34,7 +34,20 @@ generator = Faker::Commerce
 
 
   prod = Product.new(name: name, price: price, category: deps, on_sale: sale, image_url: nil, in_stock: stock, description: desc)
-  prod.save
+  if prod.valid?
+    prod.save
+  end
 end
 
 
+
+
+10.times do
+  name = generator.unique.brand
+  email = "products@#{name.gsub(/\s+/, "")}.org"
+  phone = Faker::Base.numerify('###-###-####')
+  supp = Supplier.new(name: name, email: email, phone_number: phone)
+  if supp.valid?
+    supp.save
+  end
+end

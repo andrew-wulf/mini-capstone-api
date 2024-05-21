@@ -2,20 +2,18 @@
 
 one:
   name: MyString
-  price: 1
+  price: 9.99
   image_url: MyString
   description: MyString
   category: MyString
-  string: MyString
-  in_stock: 1
-  on_sale: 1
+  in_stock: 30
+  on_sale: 25
 
 two:
-  name: MyString
-  price: 1
+  name: MyString2
+  price: 9.99
   image_url: MyString
   description: MyString
   category: MyString
-  string: MyString
-  in_stock: 1
-  on_sale: 1
+  in_stock: 30
+  on_sale: 25

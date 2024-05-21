@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   delete "products/:id" => "products#destroy"
 
   get "/products/categories/:category" => "products#show_category"
-  
+  post "/products/misc" => "products#misc_func"
  
 
 end
