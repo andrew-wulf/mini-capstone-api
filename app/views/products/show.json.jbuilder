@@ -1,4 +1,5 @@
-json.current_item @data['name']
+json.id @data['id']
+json.name @data['name']
 
 
 json.price @data['price']
@@ -10,8 +11,19 @@ end
 json.after_tax @data['total']
 
 
-json.categories @data['category']
-json.image_url @data['image_url']
+json.categories @data['categories']
 json.description @data['description']
-json.id @data['id']
+json.color @data['color']
+json.material @data['material']
 
+weight, sfx = (@data['weight'] * 0.035274), "oz."
+
+if weight > 30
+  weight, sfx = (@data['weight'] * 0.00220462), "lbs."
+end
+weight = weight.round(2)
+
+json.weight "#{weight} #{sfx}"
+
+json.supplier @data['supplier']
+json.images @data['images']

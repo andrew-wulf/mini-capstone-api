@@ -1,10 +1,22 @@
 class Product < ApplicationRecord
   belongs_to :supplier
-  validates :name,  presence: true, uniqueness: true
+  has_many :image
+  validates :name,  presence: true
   validates :price,  presence: true, numericality: {greater_than: 0, less_than: 10000000}
-  validates :category,  presence: true
   validates :in_stock,  presence: true, numericality: { only_integer: true }
   validates :on_sale, presence: true, numericality: { only_integer: true, less_than_or_equal_to: 100}
+
+  validate :unique_name_or_color_combination
+
+  def unique_name_or_color_combination
+    first_entry = self.class.find_by(name:self.name, color: self.color)
+    if first_entry
+      if self.id != first_entry.id
+        errors.add(:base, "Name and Color combination must be unique")
+        pp first_entry
+      end
+    end
+  end
 
   def display
     @data = self.attributes
@@ -12,6 +24,9 @@ class Product < ApplicationRecord
 
     @data['price'] = self.display_currency(@price)
     @data['total'] = self.display_currency(self.total)
+
+    @data['images'] = self.image.map {|i| i.url}
+    @data['supplier'] = {name: self.supplier.name, email: self.supplier.email, phone_number: self.supplier.phone_number}
     return @data
   end
 
@@ -35,44 +50,6 @@ class Product < ApplicationRecord
     return self.price * ((100 - self.on_sale) / 100)
   end
 
-
-  def misc_func
-    #Insert database operations here
-    # products = Product.all
-    # products.each do |prod|
-    #   des = prod.description
-    #   if des 
-    #     x = des.index("developed by ") + 13
-    #     y = des.index(",", x)
-    #     brand = des[x...y]
-    #     res = Supplier.find_by(name: brand)
-        
-    #     if res
-    #       id = res.id
-    #     else
-    #       supp = Supplier.new(name: brand, email: "products@#{name.gsub(/\s+/, "")}.org", phone_number: Faker::Base.numerify('###-###-####'))
-    #       supp.save
-    #     end
-    #     prod.supplier_id = id
-    #     prod.save
-    #   end
-    # end
-    
-    # 300.times do
-    #   brand = Faker::Commerce.brand
-    #   res = Supplier.where(name: brand)
-    #   i = 0
-    #   while i < res.length
-    #     row = res[i]
-    #     if i > 0
-    #       row.destroy
-    #     end
-    #     i +=1
-    #   end
-    # end
-  end
-
-
   def check_validity
     products = Product.all
     products.each do |prod|
@@ -82,6 +59,4 @@ class Product < ApplicationRecord
       end
     end
   end
-  
-
 end
