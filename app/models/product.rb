@@ -22,6 +22,7 @@ class Product < ApplicationRecord
     @data = self.attributes
     @price = self.get_price
 
+    @data['initial_total'] = self.attributes['price']
     @data['price'] = self.display_currency(@price)
     @data['total'] = self.display_currency(self.total)
 
@@ -39,7 +40,7 @@ class Product < ApplicationRecord
   end
 
   def total
-    return @price + self.tax
+    return (@price + self.tax)
   end
 
   def display_currency(amount)
@@ -47,7 +48,7 @@ class Product < ApplicationRecord
   end
 
   def get_price
-    return self.price * ((100 - self.on_sale) / 100)
+    return ((self.attributes['price'] * (100 - self.on_sale)) / 10000).round(2)
   end
 
   def check_validity

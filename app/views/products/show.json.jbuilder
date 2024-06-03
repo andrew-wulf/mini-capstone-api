@@ -9,6 +9,7 @@ if @data['on_sale'] > 0
 end
 
 json.after_tax @data['total']
+json.initial_total = @data['initial_total']
 
 
 json.categories @data['categories']

@@ -38,7 +38,8 @@ class ProductsController < ApplicationController
   def update
     prod = Product.find_by(id: params[:id])
 
-    prod.update(name: params[:name] || prod.name, price: params[:price] || prod.price, category: params[:deps] || prod.category, on_sale: params[:sale] || prod.on_sale, image_url: params[:url] || prod.image_url, in_stock: params[:stock] || prod.in_stock, description: params[:desc] || prod.description)
+    prod.update(name: params[:name] || prod.name, price: params[:price] || prod.price, categories: params[:categories] || prod.categories, on_sale: params[:on_sale] || prod.on_sale, in_stock: params[:in_stock] || prod.in_stock, description: params[:description] || prod.description,
+    color: params[:color] || prod.color, weight: params[:weight] || prod.weight, material: params[:material] || prod.material, country_of_origin: params[:country_of_origin] || prod.country_of_origin, supplier_id: params[:supplier_id] || prod.supplier_id)
     
     display(prod)
   end
