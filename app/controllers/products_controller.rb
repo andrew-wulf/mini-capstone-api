@@ -30,7 +30,7 @@ class ProductsController < ApplicationController
   end
 
   def create
-    prod = Product.new(name: params[:name], price: params[:price], category: params[:deps], on_sale: params[:on_sale] || 0, image_url: params[:url], in_stock: params[:in_stock] || 0, description: params[:desc])
+    prod = Product.new(name: params[:name], color: params[:color], price: params[:price], categories: params[:categories], on_sale: params[:on_sale] || 0, in_stock: params[:in_stock] || 0, description: params[:description], material: params[:material], weight: params[:weight], country_of_origin: params[:country_of_origin], supplier_id: params[:supplier_id])
 
     display(prod)
   end

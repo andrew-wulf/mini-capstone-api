@@ -22,7 +22,7 @@ class Product < ApplicationRecord
     @data = self.attributes
     @price = self.get_price
 
-    @data['initial_total'] = self.attributes['price']
+    @data['initial_price'] = self.attributes['price']
     @data['price'] = self.display_currency(@price)
     @data['total'] = self.display_currency(self.total)
 

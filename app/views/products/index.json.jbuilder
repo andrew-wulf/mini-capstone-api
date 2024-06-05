@@ -1,5 +1,7 @@
-@products.each do |data|
-  data = data.display
+json.array! @products do |prod|
+
+  data = prod.display
+
   json.id data['id']
   json.name data['name']
 
@@ -11,6 +13,7 @@
   end
 
   json.total data['total']
+  json.initial_price data['initial_price']
 
 
   json.categories data['categories']
@@ -30,4 +33,6 @@
   json.supplier data['supplier']
   json.images data['images']
 end
+  
+
 
