@@ -1,7 +1,12 @@
 class ProductsController < ApplicationController
   def index
-    @products = Product.all
-    render(template: "products/index", formats: :json)
+    pp current_user
+    if current_user
+      @products = Product.all
+      render(template: "products/index", formats: :json)
+    else
+      render json: {}, status: :unauthorized
+    end
   end
 
   def show

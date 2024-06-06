@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-  
+
   def create
     user = User.find_by(email: params[:email])
     if user && user.authenticate(params[:password])
@@ -12,6 +12,16 @@ class SessionsController < ApplicationController
         "HS256" # the encryption algorithm
       )
       render json: { jwt: jwt, email: user.email, user_id: user.id }, status: :created
+    else
+      render json: {}, status: :unauthorized
+    end
+  end
+
+
+  def login
+    if current_user
+      user = User.find_by(id: current_user)
+      render json: {login: 'success!', name: user.name, email: user.email, user_id: user.id}
     else
       render json: {}, status: :unauthorized
     end
