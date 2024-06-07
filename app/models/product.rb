@@ -1,6 +1,8 @@
 class Product < ApplicationRecord
   belongs_to :supplier
   has_many :image
+  has_many :order
+  
   validates :name,  presence: true
   validates :price,  presence: true, numericality: {greater_than: 0, less_than: 10000000}
   validates :in_stock,  presence: true, numericality: { only_integer: true }
@@ -36,11 +38,11 @@ class Product < ApplicationRecord
   end
 
   def tax
-    return (@price * 0.09).round(2)
+    return (self.get_price * 0.09).round(2)
   end
 
   def total
-    return (@price + self.tax)
+    return (self.get_price + self.tax)
   end
 
   def display_currency(amount)
