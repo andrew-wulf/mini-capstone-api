@@ -23,5 +23,16 @@ class UsersController < ApplicationController
     @user = User.find_by(id: params[:id])
     render :show
   end
+
+  def current_user_info
+    if current_user
+      @user = User.find_by(id: current_user.id)
+      render :show
+
+    else
+      render json: {}
+    end
+    
+  end
   
 end

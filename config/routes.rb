@@ -34,6 +34,7 @@ Rails.application.routes.draw do
   delete "images/:id" => "images#destroy"
  
   get "/users" => "users#index"
+  get "/users/current" => "users#current_user_info"
   post "/users" => "users#create"
   post "/sessions" => "sessions#create"
   get "/login" => "sessions#login"

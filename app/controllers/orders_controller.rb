@@ -1,56 +1,44 @@
 class OrdersController < ApplicationController
+  before_action :authenticate_user
 
   def index
-    if current_user
-      @orders = Order.where(user_id: current_user.id)
-      render :index
-    else
-      render json: {}, status: :unauthorized
-    end
+    @orders = Order.where(user_id: current_user.id)
+    render :index
   end
 
   def show
-    if current_user
-      @order = Order.find_by(id: params[:id])
-      if @order.user_id == current_user.id
-        render :show
-      else
-        render json: {Denied: "Order doesn't belong to this user."}
-      end
+    @order = Order.find_by(id: params[:id])
+    if @order.user_id == current_user.id
+      render :show
     else
-      render json: {}, status: :unauthorized
+      render json: {Denied: "Order doesn't belong to this user."}
     end
   end
 
   def create
-    if current_user
-      prod = Product.find_by(id: params[:product_id])
-      if prod
-        if prod.valid?
-          qty = params[:quantity].to_i
+    prod = Product.find_by(id: params[:product_id])
+    if prod
+      if prod.valid?
+        qty = params[:quantity].to_i
 
-          @order = Order.new(user_id: current_user.id, product_id: params[:product_id], 
-          quantity: qty, 
-          subtotal: prod.get_price * qty,
-          tax: prod.tax * qty, 
-          total: prod.total * qty)
+        @order = Order.new(user_id: current_user.id, product_id: params[:product_id], 
+        quantity: qty, 
+        subtotal: prod.get_price * qty,
+        tax: prod.tax * qty, 
+        total: prod.total * qty)
 
-          if @order.valid?
-            @order.save
-            render :show
-          else
-            render json: @order.errors
-          end
+        if @order.valid?
+          @order.save
+          render :show
         else
-          render json: prod.errors
+          render json: @order.errors
         end
       else
-        render json: {message: 'No item exists at this index.'}
+        render json: prod.errors
       end
     else
-      render json: {}, status: :unauthorized
+      render json: {message: 'No item exists at this index.'}
     end
-
   end
-
+  
 end
