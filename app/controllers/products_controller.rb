@@ -1,6 +1,11 @@
 class ProductsController < ApplicationController
   def index
-    @products = Product.all
+    if params[:limit] == nil || params[:offset] == nil
+      @products = Product.all
+    
+    else
+      @products = Product.offset(params[:offset]).limit(params[:limit])
+    end
     render(template: "products/index", formats: :json)
   end
 
@@ -56,6 +61,14 @@ class ProductsController < ApplicationController
   end
 
 
-
+  def search
+    if params[:limit] == nil
+      @products = Product.where("LOWER( name ) LIKE ?", "%" + params[:q] + "%")
+    else
+      @products = Product.where("LOWER( name ) LIKE ?", "%" + params[:q] + "%").limit(params[:limit])
+    end
+    
+    render(template: "products/index", formats: :json)
+  end
 
 end
