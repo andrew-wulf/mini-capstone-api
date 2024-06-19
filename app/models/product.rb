@@ -2,6 +2,7 @@ class Product < ApplicationRecord
   belongs_to :supplier
   has_many :image
   has_many :order
+  has_many :category_product
   
   validates :name,  presence: true
   validates :price,  presence: true, numericality: {greater_than: 0, less_than: 10000000}
@@ -9,6 +10,12 @@ class Product < ApplicationRecord
   validates :on_sale, presence: true, numericality: { only_integer: true, less_than_or_equal_to: 100}
 
   validate :unique_name_or_color_combination
+
+
+  def categories
+    return self.category_product.map{|cp| cp.category}
+  end
+
 
   def unique_name_or_color_combination
     first_entry = self.class.find_by(name:self.name, color: self.color)

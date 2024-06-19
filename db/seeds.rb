@@ -11,6 +11,7 @@
 
 generator = Faker::Commerce
 
+# Suppliers
 names = []
 30.times do
   name = generator.brand
@@ -28,12 +29,38 @@ end
 
 supp_limit = Supplier.all.length
 
+# Categories
+categories = ['Grocery', 'Clothing, Shoes & Accessories', 'Home', 'Furniture', 'Kitchen & Dining', 'Electronics', 'Video Games', 'Toys', 'Sports & Outdoors', 'Household Essentials', 'Health', 'Personal Care', 'Beauty', 'Pets', 'School & Office Supplies']
+
+# Validations prevent duplicates
+categories.each {|cat| c = Category.new(name: cat); c.save}
+
+## old code
+###dep = generator.department(max: 3)
+  
+
+# Sample Users
+users = [['Bob', 'Salad'], ['Julie', 'Summers'], ['Jeremy', 'Whiteboard'], ['Sylvia', 'Bluegrass']]
+
+users.each do |arr|
+  first, last = arr[0], arr[1]
+  email = "#{first}#{last}@gmail.com".downcase
+  password = "#{first}#{last}".downcase
+  name = "#{first} #{last}"
+
+  user = User.new(name: name, email: email, password: password, password_confirmation: password)
+  user.save
+end
+
+admin = User.new(name: 'Andrew Wulf', email: 'awulf@gmail.com', password: 'password', password_confirmation: 'password', admin: true)
+admin.save
+
+
+# Products
 200.times do
   name = generator.product_name
   price = (generator.price(range:99...3000)).to_i
-  dep = generator.department(max: 3)
-  
-  deps = dep.split(/, | & /)
+
   num = rand(60)
   if num > 40
     sale = rand(0...45)
@@ -58,7 +85,7 @@ supp_limit = Supplier.all.length
     desc = "This #{color} #{name}, developed by #{brand}, was made in #{country} using only the finest #{material}!"
   end
 
-  prod = Product.new(name: name, price: price, categories: deps, on_sale: sale, in_stock: stock, description: desc, color: color, supplier_id: supp_id, material: material, country_of_origin: country, weight: grams)
+  prod = Product.new(name: name, price: price, on_sale: sale, in_stock: stock, description: desc, color: color, supplier_id: supp_id, material: material, country_of_origin: country, weight: grams)
 
   if prod.valid?
     prod.save
@@ -71,10 +98,31 @@ supp_limit = Supplier.all.length
         pp img.errors
       end
     end
+
+    # add categories
+    cats = []
+    rand(1..3).times do
+      while true
+        c = categories[rand(0...categories.length)]
+        if cats.include?(c) == false
+          cats.push(c)
+          break
+        end
+      end
+    end
+
+    cats.each do |cat|
+      c = Category.find_by(name: cat)
+      conn = CategoryProduct.new(category_id: c.id, product_id: prod.id)
+      conn.save
+    end
+
   else
     pp prod.errors
   end
 end
+
+
 
 
 
