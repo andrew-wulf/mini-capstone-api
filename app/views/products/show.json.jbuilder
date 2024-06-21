@@ -1,29 +1,29 @@
-json.id @data['id']
-json.name @data['name']
+json.id @product.id
+
+json.name @product.name
+json.description @product.description
+
+json.price @product.price
+json.percent_off @product.on_sale
+json.total @product.total
 
 
-json.price @data['price']
-json.percent_off @data['on_sale']
+json.in_stock @product.in_stock
 
-json.after_tax @data['total']
-json.initial_total @data['initial_price']
+json.categories @product.categories
+json.supplier @product.supplier
+json.images @product.images
 
-json.in_stock @data['in_stock']
 
-json.categories @data['categories']
-json.description @data['description']
-json.color @data['color']
-json.material @data['material']
+json.color @product.color
+json.material @product.material
 
-weight, sfx = (@data['weight'] * 0.035274), "oz."
+weight, sfx = (@product.weight * 0.035274), "oz."
 
 if weight > 30
-  weight, sfx = (@data['weight'] * 0.00220462), "lbs."
+  weight, sfx = (@product.weight * 0.00220462), "lbs."
 end
 weight = weight.round(2)
 
 json.weight "#{weight} #{sfx}"
-json.origin @data['country_of_origin']
-
-json.supplier @data['supplier']
-json.images @data['images']
+json.origin @product.country_of_origin

@@ -1,46 +1,40 @@
 class SuppliersController < ApplicationController
+  before_action :check_admin, before: [:create, :update, :destroy]
+  
   def index
     @suppliers = Supplier.all
-    render(template: "suppliers/index", formats: :json)
+    render :index
   end
 
   def show
-    supp = Supplier.find_by(id: params[:id])
-    display(supp)
-  end
-
-  def display(supp)
-    if supp
-      if supp.valid?
-        supp.save
-
-        @data = supp.attributes
-        render(template: "suppliers/show", formats: :json)
-      else
-        render json: supp.errors
-      end
+    @supplier = Supplier.find_by(id: params[:id])
+    if @supplier
+      render :show
     else
       render json: {message: 'No item exists at this index.'}
     end
   end
 
-
   def create
-    supp = Supplier.new(name: params[:name], 
+    @supplier = Supplier.new(name: params[:name], 
     email: params[:email], 
     phone_number: params[:phone_number])
 
-    display(supp)
+    if @supplier.save
+      render :show
+    else
+      render json: supp.errors
+    end
   end
 
   def update
-    supp = Supplier.find_by(id: params[:id])
+    @supplier = Supplier.find_by(id: params[:id])
 
-    supp.update(name: params[:name] || supp.name, 
+    @supplier.update(name: params[:name] || supp.name, 
     email: params[:email] || supp.email, 
     phone_number: params[:phone_number] || supp.phone_number)
 
-    display(supp)
+    render :show
   end
 
   def destroy

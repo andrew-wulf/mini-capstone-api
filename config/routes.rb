@@ -46,4 +46,11 @@ Rails.application.routes.draw do
   get "orders/:id" => "orders#show"
   post "/orders" => "orders#create"
 
+
+  post "/cart" => "carted_products#create"
+  patch "/cart/:id" => "carted_products#update"
+  delete "/cart/:id" => "carted_products#remove"
+  post "/cart/checkout" => "carted_products#checkout"
+
+
 end

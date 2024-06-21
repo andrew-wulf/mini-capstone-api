@@ -28,4 +28,10 @@ class ApplicationController < ActionController::Base
     end
   end
   
+  def check_admin
+    unless current_user.admin
+      render json: {}, status: :unauthorized
+      return false
+    end
+  end
 end
