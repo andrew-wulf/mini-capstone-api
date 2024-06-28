@@ -13,8 +13,10 @@ Rails.application.routes.draw do
   post "/products/create" => "products#create"
   get "/products/test/:id" => "products#test"
 
-  get "/products/:id" => "products#show"
   get "/products/search/:q" => "products#search"
+  get "/products/deals" => "products#deals"
+  get "/products/:id" => "products#show"
+  
   patch "/products/:id" => "products#update"
   delete "products/:id" => "products#destroy"
 

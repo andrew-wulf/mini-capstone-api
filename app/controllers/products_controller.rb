@@ -67,4 +67,14 @@ class ProductsController < ApplicationController
     render(template: "products/index", formats: :json)
   end
 
+  def deals
+    if params[:limit] == nil
+      @products = Product.where("on_sale > 0").order("on_sale DESC")
+    else
+      @products = Product.where("on_sale > 0").order("on_sale DESC").limit(params[:limit])
+    end
+    
+    render(template: "products/index", formats: :json)
+  end
+
 end
