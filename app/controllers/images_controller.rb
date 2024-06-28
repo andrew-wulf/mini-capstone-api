@@ -1,45 +1,38 @@
 class ImagesController < ApplicationController
+
   def index
     @images = Image.all
-    render(template: "images/index", formats: :json)
+    render :index
   end
 
   def show
-    img = Image.find_by(id: params[:id])
-    display(img)
-  end
-
-  def display(img)
-    if img 
-      if img.valid?
-        img.save
-
-        @data = img.attributes
-        render(template: "images/show", formats: :json)
-      else
-        render json: img.errors
-      end
+    @image = Image.find_by(id: params[:id])
+    if @image
+      render :show
     else
       render json: {message: 'No item exists at this index.'}
     end
   end
 
-
   def create
-    img = Image.new(name: params[:name], 
+    @image = Image.new(name: params[:name], 
     email: params[:email], 
     phone_number: params[:phone_number])
 
-    display(img)
+    if @image.save
+      render :show
+    else
+      render json: @image.errors
+    end
   end
 
   def update
-    img = Image.find_by(id: params[:id])
+    @image = Image.find_by(id: params[:id])
 
-    img.update(url: params[:url] || img.url, 
-    product_id: params[:product_id] || img.product_id)
+    @image.update(url: params[:url] || @image.url, 
+    product_id: params[:product_id] || @image.product_id)
 
-    display(img)
+    render :show
   end
 
   def destroy

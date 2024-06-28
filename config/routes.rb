@@ -14,10 +14,12 @@ Rails.application.routes.draw do
   get "/products/test/:id" => "products#test"
 
   get "/products/:id" => "products#show"
+  get "/products/search/:q" => "products#search"
   patch "/products/:id" => "products#update"
   delete "products/:id" => "products#destroy"
 
-  #get "/products/categories/:category" => "products#show_category"
+  get "/categories" => "categories#index"
+  get "/categories/:name" => "categories#show"
 
   get "/suppliers" => "suppliers#index"
   post "/suppliers/create" => "suppliers#create"
@@ -43,5 +45,12 @@ Rails.application.routes.draw do
   get "/orders" => "orders#index"
   get "orders/:id" => "orders#show"
   post "/orders" => "orders#create"
+
+
+  post "/cart" => "carted_products#create"
+  patch "/cart/:id" => "carted_products#update"
+  delete "/cart/:id" => "carted_products#remove"
+  post "/cart/checkout" => "carted_products#checkout"
+
 
 end

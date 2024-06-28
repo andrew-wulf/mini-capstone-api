@@ -1,4 +1,4 @@
-json.id @data['id']
-json.name @data['name']
-json.email @data['email']
-json.phone_number @data['phone_number']
+json.id @supplier.id
+json.name @supplier.name
+json.email @supplier.email
+json.phone_number @supplier.phone_number

@@ -1,37 +1,34 @@
-json.array! @products do |prod|
+json.array! @products do |product|
 
-  data = prod.display
+  json.id product.id
 
-  json.id data['id']
-  json.name data['name']
+  json.name product.name
+  json.description product.description
 
-
-  json.price data['price']
-
-  if data['on_sale'] > 0
-    json.on_sale "#{data['on_sale']}%"
-  end
-
-  json.total data['total']
-  json.initial_price data['initial_price']
+  json.price product.price
+  json.percent_off product.on_sale
+  json.total product.total
 
 
-  json.categories data['categories']
-  json.description data['description']
-  json.color data['color']
-  json.material data['material']
+  json.in_stock product.in_stock
 
-  weight, sfx = (data['weight'] * 0.035274), "oz."
+  json.categories product.categories
+  json.supplier product.supplier
+  json.images product.images
+
+
+  json.color product.color
+  json.material product.material
+
+  weight, sfx = (product.weight * 0.035274), "oz."
 
   if weight > 30
-    weight, sfx = (data['weight'] * 0.00220462), "lbs."
+    weight, sfx = (product.weight * 0.00220462), "lbs."
   end
   weight = weight.round(2)
 
   json.weight "#{weight} #{sfx}"
-
-  json.supplier data['supplier']
-  json.images data['images']
+  json.origin product.country_of_origin
 end
   
 

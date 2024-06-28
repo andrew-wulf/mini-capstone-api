@@ -1,10 +1,8 @@
 class Order < ApplicationRecord
   belongs_to :user
-  belongs_to :product
+  has_many :carted_products
 
   validates :user_id,  presence: true
-  validates :product_id, presence: true
-  validates :quantity,  presence: true, numericality: {greater_than: 0, less_than: 1000}
   validates :subtotal,  presence: true
   validates :tax,  presence: true
   validates :total,  presence: true

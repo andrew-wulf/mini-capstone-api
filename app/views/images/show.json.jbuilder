@@ -1,4 +1,4 @@
-json.id @data['id']
-json.url @data['url']
-json.product_id @data['product_id']
+json.id @image.id
+json.url @image.url
+json.product_id @image.product_id
 
