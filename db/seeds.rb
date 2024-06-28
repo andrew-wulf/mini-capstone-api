@@ -11,6 +11,9 @@
 
 generator = Faker::Commerce
 
+user = User.new(name: 'Andrew Wulf', email: 'awulf@gmail.com', password: 'password', password_confirmation: 'password')
+user.save
+
 names = []
 30.times do
   name = generator.brand
